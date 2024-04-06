@@ -39,10 +39,11 @@ The CPU is the main component of the console. It is responsible for executing in
 
 """
 
-from datetime import datetime
+from lib.debugger import debugger_decorator
+
 
 class CPU:
-    def __init__(self) -> None:
+    def __init__(self, debug=False) -> None:
 
         # using explicit bytes for clarity and info
         self.program_counter = 0x0000
@@ -51,22 +52,10 @@ class CPU:
         self.register_x = 0x00
         self.register_y = 0x00
         self.processor_status = 0x00
+        self.debug = debug
 
+    @debugger_decorator
     def interpret(self, program) -> None:
         self.program_counter = 0
 
-    def _state(self) -> None:
-        formatted_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-        print("--------------------------------------")
-        print(f"{formatted_now} [haiiro] CPU State")
-        print("--------------------------------------")
-        print(f"PC:\t0x{format(self.program_counter, '04x')}")
-        print(f"SP:\t0x{format(self.stack_pointer, '02x')}")
-        print(f"A:\t0x{format(self.accumulator, '02x')}")
-        print(f"X:\t0x{format(self.register_x, '02x')}")
-        print(f"Y:\t0x{format(self.register_y, '02x')}")
-        print(f"\nP:\t{format(self.processor_status, '08b')} (NV1BDIZC)")
-        print(f"\tN: {(self.processor_status & 0b10000000) >> 7}\tV: {(self.processor_status & 0b01000000) >> 6}\t1: {(self.processor_status & 0b00100000) >> 5}\tB: {(self.processor_status & 0b00010000) >> 4}")
-        print(f"\tD: {(self.processor_status & 0b00001000) >> 3}\tI: {(self.processor_status & 0b00000100) >> 2}\tZ: {(self.processor_status & 0b00000010) >> 1}\tC: {(self.processor_status & 0b00000001)}\t")
-        print("--------------------------------------")
+        print(f"Interpreting program: {program}")

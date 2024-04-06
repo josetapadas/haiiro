@@ -1,4 +1,4 @@
 from lib.cpu import CPU
 
-custom_cpu = CPU()
-custom_cpu._state()
+custom_cpu = CPU(debug=True)
+custom_cpu.interpret("some program")
